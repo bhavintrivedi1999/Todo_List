@@ -1,9 +1,17 @@
 const express = require("express");
+// const session = require("express-session");
 const requestsRouter = require("./routers/requests");
-// require("./mongoose/db/mongoose");
+require("./mongoose/db/mongoose");
 
 //setting up the server
 const app = express();
+
+// // Set up sessions//homework do it by session
+// app.use(session({
+//   secret: 'secret-key',
+//   resave: false,
+//   saveUninitialized: true
+// }));
 
 //setting up the CORS code
 app.use((req, res, next) => {
@@ -15,6 +23,7 @@ app.use((req, res, next) => {
     }
     next();
 });
+
 
 //setting up the middlewares
 app.use(express.json());

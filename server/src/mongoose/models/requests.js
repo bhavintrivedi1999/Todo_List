@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 //setting up the schema
 
-const users = mongoose.Schema({
+const usersSchema = mongoose.Schema({
     name:{
         type:String,
         require:true
@@ -10,13 +10,14 @@ const users = mongoose.Schema({
     email:{
         type:String,
         require:true,
+        unique:true
     },
     password:{
         type:String,
         require:true
     }
 })
-const tasklist = mongoose.Schema({
+const tasklistSchema = mongoose.Schema({
     task:{
         type:String,
         require:true
@@ -31,8 +32,8 @@ const tasklist = mongoose.Schema({
     }
 })
 //setting up the model
-const userList = mongoose.model("users",users);
-const taskList = mongoose.model("taskList", tasklist);
+const userList = mongoose.model("users",usersSchema);
+const taskList = mongoose.model("tasklist", tasklistSchema);
 
 module.exports = {
     userList,taskList
