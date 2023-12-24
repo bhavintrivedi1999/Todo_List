@@ -11,13 +11,15 @@ function App() {
   // On click Links should route to respective components
   return (
     <BrowserRouter>
-      <nav>
-        <Link to='/home'>Home</Link>|||
-        <Link to='/peers'>Peers</Link>|||
-        <Link to='/signin'>SignIn</Link>|||
-        <Link to='/signup'>SignUp</Link>|||
-        <Link to='/logout'>LogOut</Link>
+      <nav className="nav justify-content-center">
+        <Link class="nav-item" to='/home'>Home</Link>
+        <Link class="nav-item" to='/peers'>Peers</Link>
+        <Link class="nav-item" to='/signin'>SignIn</Link>
+        <Link class="nav-item" to='/signup'>SignUp</Link>
+        <Link class="nav-item" to='/logout'>LogOut</Link>
       </nav>
+
+  
       <Routes>
         <Route path='/' element={<Navigate to='/home'/>}/>
         <Route path='/home' element={<Home/>}/>

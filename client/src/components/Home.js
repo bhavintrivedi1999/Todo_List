@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import DeleteIcon from "@material-ui/icons/Delete";
+import UndoIcon from '@material-ui/icons/Undo';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+// import {DeleteIcon } from '@mui/icons-material';
+// import DeleteIcon from '@mui/icons-material/Delete';
+
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../styles/home.css"
 const url = "http://localhost:8000";
+// Importing material UI icons
+
+
 
 const Home = () => {
 
@@ -50,21 +59,22 @@ const Home = () => {
 
   return (
     <>
-      <div className='user-details'>
+    {/* Will set this in navbar */}
+      {/* <div className='user-details'>
         <p>{state.user.name}</p>
         <p>{state.user.email}</p>
-      </div>
+      </div> */}
 
       <div className='container'>
-        <div className="row">
+        {/* <div className="row"> */}
           <div className="user-details">
             <h5>ToDo List</h5>
             <input />
-            <button>Add</button>
+            <button className="button"><AddCircleIcon/></button>
             {state.todo.map((data, i) => <div className='task-container' key={i}>
               <input type='checkbox' />
               <span>{data.task}</span>
-              <button>Delete</button>
+              <button className="button"><DeleteIcon /></button>
             </div>)}
           </div>
           <div className="user-details">
@@ -72,8 +82,8 @@ const Home = () => {
             {state.inProgress.map((data, i) => <div className='task-container' key={i}>
               <input type='checkbox' />
               <span>{data.task}</span>
-              <button>Delete</button>
-              <button>Undo</button>
+              <button className="button"><DeleteIcon /></button>
+              <button className="button"><UndoIcon/></button>
             </div>)}
           </div>
           <div className="user-details">
@@ -81,12 +91,12 @@ const Home = () => {
             <ul>
               {state.done.map((data, i) => <li className='task-container' key={i}>
                 <span>{data.task}</span>
-                <button>Delete</button>
-                <button>Undo</button>
+                <button className="button"><DeleteIcon /></button>
+                <button className="button"><UndoIcon/></button>
               </li>)}
             </ul>
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </>
   )
