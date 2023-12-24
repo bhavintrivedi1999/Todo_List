@@ -33,7 +33,7 @@ const tasklistSchema = mongoose.Schema({
 })
 //setting up the model
 const userList = mongoose.model("users",usersSchema);
-const taskList = mongoose.model("tasklist", tasklistSchema);
+const taskList = mongoose.model("tasklists", tasklistSchema);
 
 module.exports = {
     userList,taskList

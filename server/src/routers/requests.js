@@ -1,29 +1,21 @@
 const express = require("express");
 const {userList,taskList} = require("../mongoose/models/requests");
-let user;
+let user={
+    name:'Mayank',
+    email:'Mayank@email.com'
+};
 
 //setting up the request router
 const router = express.Router();
-// const users = ['Bhavin','Ronak','Mayank'];
-// const tasklist = [{task:'Running',user:'Mayank',state:'ToDo'},
-// {task:'Singing',user:'Bhavin',state:'ToDo'},
-// {task:'GYM',user:'Ronak',state:'ToDo'},
-// {task:'Coding',user:'Mayank',state:'InProgress'},
-// {task:'Learning',user:'Bhavin',state:'InProgress'},
-// {task:'Reading',user:'Ronak',state:'InProgress'},
-// {task:'Skipping',user:'Mayank',state:'Done'},
-// {task:'Lunch',user:'Bhavin',state:'Done'},
-// {task:'Walking',user:'Ronak',state:'Done'}];
+
 // Middleware to check if the user is authenticated
 const authenticateUser = (req, res, next) => {
-    if (user) {
-        console.log('did not fail');
-      next();
-    } else {
-      console.log('inside fail authentication');
-      res.status(403).send({msg:'auth fail'});
-    //   res.redirect('/signin'); // Redirect to the login page if not authenticated
-    }
+    next();
+    // if (user) {// uncomment when no need to restart the server
+    //   next();
+    // } else {
+    //   res.status(403).send({msg:'auth fail'});
+    // }
   };
 
 router.post('/getData',(req,res)=>{
@@ -38,7 +30,12 @@ router.post('/getData',(req,res)=>{
 
 router.get('/home',authenticateUser,async(req,res)=>{
     try {
-        res.send('inside home...');
+        const {name} = user;
+        const todoData = await taskList.find({user:name,state:'ToDo'});
+        const inprogressData = await taskList.find({user:name,state:'InProgress'});
+        const doneData = await taskList.find({user:name,state:'Done'});
+        console.log({todoData,inprogressData,doneData,user});
+        res.send({todoData,inprogressData,doneData,user});
     } catch (error) {
         res.status(400).send('error while fetching home...');
     }
@@ -65,7 +62,7 @@ router.post('/signin',async(req,res)=>{
     try {
         const data = await userList.findOne({email:req.body.email});
         if(data && data.password===req.body.password){
-            user=data.name;
+            user={name:data.name,email:data.email};
             res.send('User login successfully...');
         }else{
             throw({message:'invalid credentials'});
@@ -115,9 +112,9 @@ router.post('/addUser',async(req,res)=>{
 
 router.post('/addTask',async(req,res)=>{
     try {
-        await taskList.create({task:'Running',user:'Mayank',state:'ToDo'});
-        await taskList.create({task:'Coding',user:'Mayank',state:'InProgress'});
-        await taskList.create({task:'Reading',user:'Mayank',state:'Done'});
+        await taskList.create({task:'Running',user:'Bhavin',state:'ToDo'});
+        await taskList.create({task:'Coding',user:'Bhavin',state:'InProgress'});
+        await taskList.create({task:'Reading',user:'Bhavin',state:'Done'});
         res.status(200).send('task added');
     } catch (error) {
         res.send({error:error.message});
