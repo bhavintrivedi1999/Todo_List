@@ -2,7 +2,7 @@ const express = require("express");
 const {userList,taskList} = require("../mongoose/models/requests");
 let user={
     name:'Mayank',
-    email:'Mayank@email.com'
+    email:'mayank@email.com'
 };
 
 //setting up the request router
@@ -10,23 +10,13 @@ const router = express.Router();
 
 // Middleware to check if the user is authenticated
 const authenticateUser = (req, res, next) => {
-    next();
-    // if (user) {// uncomment when no need to restart the server
-    //   next();
-    // } else {
-    //   res.status(403).send({msg:'auth fail'});
-    // }
+    // next();
+    if (user) {// uncomment when no need to restart the server
+      next();
+    } else {
+      res.status(403).send({msg:'auth fail'});
+    }
   };
-
-router.post('/getData',(req,res)=>{
-    const {userName} = req.body;
-    let todo,InProgress,done;
-    //user's todo data
-    //user's in-progres data
-    //user's done data
-    
-    res.send({todo,InProgress,done});
-});
 
 router.get('/home',authenticateUser,async(req,res)=>{
     try {
@@ -34,13 +24,53 @@ router.get('/home',authenticateUser,async(req,res)=>{
         const todoData = await taskList.find({user:name,state:'ToDo'});
         const inprogressData = await taskList.find({user:name,state:'InProgress'});
         const doneData = await taskList.find({user:name,state:'Done'});
-        console.log({todoData,inprogressData,doneData,user});
         res.send({todoData,inprogressData,doneData,user});
     } catch (error) {
         res.status(400).send('error while fetching home...');
     }
 });
 
+router.post('/addTodo',async(req,res)=>{
+    try {
+        const {name,email} = user;
+        const {task,state='ToDo'} = req.body;
+        await taskList.create({task,user:name,state,email});
+        res.status(201).send('task added...');
+    } catch (error) {
+        res.status(400).send({error:error.message});
+    }
+});
+
+router.patch('/remove/:id',async(req,res)=>{
+    try {
+        const {id} = req.params;
+        await taskList.findByIdAndDelete(id);
+        res.status(200).send('removed...');
+    } catch (error) {
+        res.status(400).send({error:error.message});
+    }
+});
+
+router.patch('/undo/:id',async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const {state} = req.body;
+        await taskList.findByIdAndUpdate(id,{state});
+        res.status(200).send('updated...');
+    } catch (error) {
+        res.status(400).send({error:error.message});
+    }
+});
+router.patch('/move/:id',async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const {state} = req.body;
+        await taskList.findByIdAndUpdate(id,{state});
+        res.status(200).send('updated...');
+    } catch (error) {
+        res.status(400).send({error:error.message});
+    }
+});
 router.get('/peers',authenticateUser,async(req,res)=>{
     try {
         res.send('inside peers...');

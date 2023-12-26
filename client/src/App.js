@@ -12,11 +12,11 @@ function App() {
   return (
     <BrowserRouter>
       <nav className="nav justify-content-center">
-        <Link class="nav-item" to='/home'>Home</Link>
-        <Link class="nav-item" to='/peers'>Peers</Link>
-        <Link class="nav-item" to='/signin'>SignIn</Link>
-        <Link class="nav-item" to='/signup'>SignUp</Link>
-        <Link class="nav-item" to='/logout'>LogOut</Link>
+        <Link className="nav-item" to='/home'>Home</Link>
+        <Link className="nav-item" to='/peers'>Peers</Link>
+        <Link className="nav-item" to='/signin'>SignIn</Link>
+        <Link className="nav-item" to='/signup'>SignUp</Link>
+        <Link className="nav-item" to='/logout'>LogOut</Link>
       </nav>
 
   
