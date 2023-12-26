@@ -106,14 +106,7 @@ const Home = () => {
   }
   return (
     <>
-      {/* Will set this in navbar */}
-      {/* <div className='user-details'>
-        <p>{state.user.name}</p>
-        <p>{state.user.email}</p>
-      </div> */}
-
       <div className='container'>
-        {/* <div className="row"> */}
         <div className="user-details">
           <h5>ToDo List</h5>
           <input name='task' value={state.task} onChange={handleChange} />

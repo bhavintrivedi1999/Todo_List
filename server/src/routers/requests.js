@@ -73,9 +73,27 @@ router.patch('/move/:id',async(req,res)=>{
 });
 router.get('/peers',authenticateUser,async(req,res)=>{
     try {
-        res.send('inside peers...');
+        const data = await taskList.find({user:{$ne:user.name}});
+        const final = data.reduce((acc,curr)=>{
+            const {user,state,task} = curr;
+            if(acc[user]){
+                if(acc[user][state]){
+                    acc[user][state].push(task);
+                }else{
+                    acc[user][state]=[task]
+                }
+            }else{  
+                acc[user]={};
+                acc[user][state]=[task];
+                console.log(acc);
+            }
+            return acc;
+        },{});
+        const peers = Object.keys(final);
+        const obj = Object.values(final);
+        res.send({peers,obj});
     } catch (error) {
-        res.status(400).send('error while fetching home...');
+        res.status(400).send({error:error.message});
     }
 });
 
@@ -120,7 +138,7 @@ router.get('/session-test',async(req,res)=>{
     }
 })
 
-router.get('/getUsers',async(req,res)=>{
+router.get('/getUsers-test',async(req,res)=>{
     try {
         const data = await userList.find();
         res.status(200).send(data);
@@ -129,7 +147,7 @@ router.get('/getUsers',async(req,res)=>{
     }
 });
 
-router.post('/addUser',async(req,res)=>{
+router.post('/addUser-test',async(req,res)=>{
     try {
         await userList.create({name:'Mayank',email:'mayank@email.com',password:'mayank123'});
         await userList.create({name:'Bhavin',email:'bhavin@email.com',password:'bhavin123'});
@@ -140,7 +158,7 @@ router.post('/addUser',async(req,res)=>{
     }
 });
 
-router.post('/addTask',async(req,res)=>{
+router.post('/addTask-test',async(req,res)=>{
     try {
         await taskList.create({task:'Running',user:'Bhavin',state:'ToDo'});
         await taskList.create({task:'Coding',user:'Bhavin',state:'InProgress'});
@@ -150,7 +168,7 @@ router.post('/addTask',async(req,res)=>{
         res.send({error:error.message});
     }
 });
-router.get('/getTask',async(req,res)=>{
+router.get('/getTask-test',async(req,res)=>{
     try {
         const data = await taskList.find();
         res.send(data);

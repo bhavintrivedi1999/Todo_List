@@ -3,6 +3,10 @@
     justify-content: space-between; /* Adjust as needed */
   }
 
+  .div1{
+    display: flex;
+  }
+
 .user-details {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -31,7 +35,4 @@
     margin-right: 8px; /* Adjust as needed */
   }
   
-  button {
-    /* You can add additional styles for the button if needed */
-  }
   
